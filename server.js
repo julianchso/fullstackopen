@@ -31,7 +31,7 @@ let persons = [
     name: "unknown",
     number: "unknown",
   },
-]
+];
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
@@ -42,34 +42,23 @@ app.get("/api/persons", (req, res) => {
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  // const personName = req.params.person.toLowerCase();
-
-  // console.log(personName);
-  // console.log(persons);
-  // console.log(persons[personName]);
-
-  // if (persons[personName]) {
-  //   res.json(persons[personName]);
-  // } else {
-  //   res.json(persons["unknown"]);
-  // }
-
-  // const id = Number(req.params.id);
   const id = Number(req.params.id);
-  const person = persons.find(person => person.id === id)
-  const unknown = persons.id == "unknown"
-  console.log(unknown)
+  const person = persons.find((person) => person.id === id);
+  const unknown = persons.id == "unknown";
+  console.log(unknown);
 
   console.log(persons[id]);
-  console.log(id)
+  console.log(id);
 
-  res.json(person)
-  
-  // if (persons[id]) {
-  //   // res.json(persons[id]);
-  // } else {
-  //   // res.json(person[unknown]);
-  // }
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).end();
+  }
+});
+
+app.get("/api/persons/info", (req, res) => {
+  str = `Phonebook has info for ${count} people`;
 });
 
 app.listen(PORT, () => {
