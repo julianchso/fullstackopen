@@ -1,9 +1,12 @@
+const http = require("http");
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 let persons = [
   {
@@ -26,11 +29,6 @@ let persons = [
     name: "Mary Poppendieck",
     number: "39-23-6423122",
   },
-  {
-    id: 0,
-    name: "unknown",
-    number: "unknown",
-  },
 ];
 
 app.get("/", (req, res) => {
@@ -45,10 +43,6 @@ app.get("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   const person = persons.find((person) => person.id === id);
   const unknown = persons.id == "unknown";
-  console.log(unknown);
-
-  console.log(persons[id]);
-  console.log(id);
 
   if (person) {
     res.json(person);
@@ -57,8 +51,19 @@ app.get("/api/persons/:id", (req, res) => {
   }
 });
 
-app.get("/api/persons/info", (req, res) => {
-  str = `Phonebook has info for ${count} people`;
+app.get("/info", (req, res) => {
+  let count = persons.length;
+  let str = `Phonebook has info for ${count} people.`;
+
+  // console.log(req);
+  body = req.body;
+  console.log(body);
+  // console.log(req.headers);
+
+  let timeDate = req.get("Date");
+  // let timeDate = new Date();
+  console.log(timeDate);
+  res.send(`<p>${str} \n ${timeDate}</p>`);
 });
 
 app.listen(PORT, () => {
