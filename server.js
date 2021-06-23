@@ -66,6 +66,32 @@ app.get("/info", (req, res) => {
   res.send(`<p>${str} \n ${timeDate}</p>`);
 });
 
+app.delete("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  persons = persons.filter(person => person.id !== id);
+
+  res.status(204).end();
+});
+
+app.post("/api/persons/:id", (req, res) => {
+  const id = Math.round(Math.random() * 1000);
+
+  const body = req.body
+  console.log(body)
+
+  const newPerson = {
+    id: id,
+    name: "Alan Turing",
+    number: "0118-999-881-999-119-7253"
+  }
+
+  persons = persons.concat(newPerson)
+
+  console.log(newPerson);
+  res.json(newPerson);
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
