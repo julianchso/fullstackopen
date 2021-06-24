@@ -69,7 +69,7 @@ app.get("/info", (req, res) => {
 app.delete("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
 
-  persons = persons.filter(person => person.id !== id);
+  persons = persons.filter((person) => person.id !== id);
 
   res.status(204).end();
 });
@@ -77,16 +77,30 @@ app.delete("/api/persons/:id", (req, res) => {
 app.post("/api/persons/:id", (req, res) => {
   const id = Math.round(Math.random() * 1000);
 
-  const body = req.body
-  console.log(body)
+  const body = req.body;
+  console.log(body);
 
   const newPerson = {
     id: id,
     name: "Alan Turing",
-    number: "0118-999-881-999-119-7253"
+    number: "0118-999-881-999-119-7253",
+  };
+
+  if (!newPerson.name || !newPerson.number) {
+    return res.status(400).json({
+      error: "name or number is missing.",
+    });
   }
 
-  persons = persons.concat(newPerson)
+  persons.forEach((e) => {
+    if (e.name == newPerson.name) {
+      return res.status(400).json({
+        error: "name already exists in phonebook.",
+      });
+    }
+  });
+
+  persons = persons.concat(newPerson);
 
   console.log(newPerson);
   res.json(newPerson);
